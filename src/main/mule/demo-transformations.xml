@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="7e958c18-b240-43df-a44c-b9e802f7ec40" basePath="convert" >
+		<http:listener-connection host="0.0.0.0" port="8086" />
+	</http:listener-config>
+	<flow name="demo-transformationsFlow" doc:id="ea0b14fc-1493-4302-8fa5-e716df81bf36" >
+		<http:listener doc:name="Listener" doc:id="42a1da8b-fd4b-4741-ba58-8e9daf17f80e" config-ref="HTTP_Listener_config" path="/toxml" allowedMethods="GET"/>
+		<logger level="INFO" doc:name="to xml" doc:id="97a66ad6-4215-406e-b3b8-764fe6c44e64" message="tranform to xml started "/>
+		<ee:transform doc:name="Transform Message" doc:id="976dedda-cae4-4460-a8e0-cde5948b597f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="f57aeed7-183e-4799-a7ac-dcba38b8151e" message="json to xml conversion done"/>
+	</flow>
+	<flow name="demo-transformationsFlow1" doc:id="5f029c2e-2562-4681-9b31-44d9e333b725" >
+		<http:listener doc:name="Listener" doc:id="b3898d7c-2215-4e43-9abd-75e6a8d5d91b" config-ref="HTTP_Listener_config" path="/tojson"/>
+		<logger level="INFO" doc:name="to json" doc:id="f418fa81-5a75-447d-849e-21986c7b8a79" message="tranform to json started " />
+		<ee:transform doc:name="Transform Message" doc:id="0be65385-bdbc-479b-9a75-f3c156efe45e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="aaa3d936-bfa3-4f1e-ac54-511aeb4c5ee8" message="xml to json conversion done" />
+	</flow>
+</mule>

@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="inputfile" format="json">
+      <types:shape format="weave" example="examples/input-1.json"><![CDATA[%dw 2.0
+
+type inputfile = {|
+  glossary: {|
+    title: String, 
+    GlossDiv: {|
+      title: String, 
+      GlossList: {|
+        GlossEntry: {|
+          ID: String, 
+          SortAs: String, 
+          GlossTerm: String, 
+          Acronym: String, 
+          Abbrev: String, 
+          GlossDef: {|
+            para: String, 
+            GlossSeeAlso: Array<String>
+          |}, 
+          GlossSee: String
+        |}
+      |}
+    |}
+  |}
+|} {"example": "{\\\"glossary\\\":{\\\"title\\\":\\\"example glossary\\\",\\\"GlossDiv\\\":{\\\"title\\\":\\\"S\\\",\\\"GlossList\\\":{\\\"GlossEntry\\\":{\\\"ID\\\":\\\"SGML\\\",\\\"SortAs\\\":\\\"SGML\\\",\\\"GlossTerm\\\":\\\"Standard Generalized Markup Language\\\",\\\"Acronym\\\":\\\"SGML\\\",\\\"Abbrev\\\":\\\"ISO 8879:1986\\\",\\\"GlossDef\\\":{\\\"para\\\":\\\"A meta-markup language, used to create markup languages such as DocBook.\\\",\\\"GlossSeeAlso\\\":[\\\"GML\\\",\\\"XML\\\"]},\\\"GlossSee\\\":\\\"markup\\\"}}}}}"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#976dedda-cae4-4460-a8e0-cde5948b597f">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="inputfile"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>
